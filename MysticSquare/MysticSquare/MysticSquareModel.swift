@@ -24,49 +24,67 @@ struct MSModel{
         for rowIdx in 0..<rows{
             gameBoard.append([BoardCell]() )
             for _ in 0..<columns {
-                gameBoard[rowIdx].append(BoardCell(cellNum: count))
+                if count != 16{
+                    gameBoard[rowIdx].append(BoardCell(cellType: .gameObject, cellNum: count))
+                } else{
+                    gameBoard[rowIdx].append(BoardCell(cellType: .emptyCell, cellNum: 16))
+                }
+                
                 count += 1
             }
         }
     }
     func gameSize() -> (rows: Int, columns: Int){
         return (numberOfRows, numberOfColumns)
-}
-    func didChooseCell(row: Int, column: Int){
+    }
+    func adjacent(rows: Int, columns: Int, freeRow: Int, freeColumn: Int) -> Bool {
+        
+        if(freeRow + 1 == rows && columns == freeColumn){
+            return true
+        }
+        if(freeRow - 1 == rows && columns == freeColumn){
+            return true
+        }
+        if(freeColumn + 1 == columns && rows == freeRow){
+            return true
+        }
+        if(freeColumn - 1 == columns && rows == freeRow){
+            return true
+        }
+        return false
+        
+        
+    }
+    mutating func didChooseCell(row: Int, column: Int){
         
         //gameBoard[row][column].isExposed = true
         print("ViewMode: tapped cell at \(row), \(column)")
         //print(gameBoard[row][column]
+        var x: Int = 0
+        var y: Int = 0
+        for i in 0..<gameBoard.count{
+            for j  in 0..<gameBoard[i].count{
+                if gameBoard[i][j].cellType == .emptyCell{
+                    x = i; y=j
+                }
+            }
+        }
+        if(adjacent(rows: row, columns: column, freeRow: x, freeColumn: y)){
+            gameBoard[x][y].cellType = .gameObject
+            gameBoard[x][y].cellNum = gameBoard[row][column].cellNum
+            gameBoard[row][column].cellNum = 16
+            gameBoard[row][column].cellType = .emptyCell
+            
+        }
     }
 }
-
-/*
-        canSwitchNumbers
- 
-        Two for loops                    x
-        Check if in matrix              x1x
-                                         x
-            Check for X
- */
-
-
-/*
- enum CellType: Comparable{
-    case openCell
-    case MineCell
- 
- }
- 
-x
- }
- 
- 
- }
- 
- 
- */
-
+enum CellType {
+    case gameObject
+    case emptyCell
+}
 
 struct BoardCell {
-    var cellNum: Int 
+    var cellType: CellType
+    var cellNum: Int
+    
 }

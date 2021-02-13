@@ -27,9 +27,9 @@ class MSViewModel: ObservableObject {
         gameModel.didChooseCell(row: row, column: column)
     }
     
-//    func cellAt(row: Int, column: Int) -> BoardCell {
-//        return gameModel.gameBoard[row][column]
-//    }
+    func cellAt(row: Int, column: Int) -> BoardCell {
+        return gameModel.gameBoard[row][column]
+    }
     func gameSize() -> (rows:Int, columns: Int){
         return gameModel.gameSize()
     }
