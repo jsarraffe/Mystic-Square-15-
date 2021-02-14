@@ -45,6 +45,8 @@ struct ContentView: View {
             }
          
         }
+        
+        .animation(.easeInOut(duration: 2))
     }
     struct CellView: View{// REPLACE buildCellFOR with CELLVIEW
         let cell: BoardCell
@@ -65,8 +67,10 @@ struct ContentView: View {
         return ZStack {
             RoundedRectangle(cornerRadius: cornerRadiusForCell).foregroundColor(Color.orange)
             RoundedRectangle(cornerRadius: cornerRadiusForCell).stroke(lineWidth: strokeLIneWidth)
+            
             if(viewModel.gameModel.gameBoard[row][column].cellType) == .gameObject{
                 Text("\(viewModel.gameModel.gameBoard[row][column].cellNum)")
+                
             }
         }
     }

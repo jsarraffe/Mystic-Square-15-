@@ -61,12 +61,10 @@ struct MSModel{
             case "left":
                 if openCell().column-1>0{
                     didChooseCell(row: openCell().row, column: openCell().column-1)
-            
                 }
             case "right":
                 if openCell().column+1<gameBoard[1].count{
                     didChooseCell(row: openCell().row, column: openCell().column+1)
-                
                     
                 }
             
