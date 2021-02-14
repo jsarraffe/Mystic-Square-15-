@@ -35,15 +35,64 @@ struct MSModel{
         }
     }
     
-    mutating func shuffle(square :[[BoardCell]]){
-        
-        
-        
+    func openCell()-> (row:Int, column:Int){
+            
+        var x: Int = 0
+        var y: Int = 0
+        for i in 0..<gameBoard.count{
+            for j  in 0..<gameBoard[i].count{
+                if gameBoard[i][j].cellType == .emptyCell{
+                    x = i; y=j
+                }
+            }
+        }
+        return(x,y)
     }
     
-    func get grandom
+    mutating func shuffle(){
+        
+        var numShuffles = 1
+       
+        let ranCell = ["left","right","down","up"]
+        var randomSelection: String
+        while numShuffles != 0{
+            randomSelection = ranCell.randomElement()!
+            switch randomSelection {
+            case "left":
+                if openCell().column-1>0{
+                    didChooseCell(row: openCell().row, column: openCell().column-1)
+            
+                }
+            case "right":
+                if openCell().column+1<gameBoard[1].count{
+                    didChooseCell(row: openCell().row, column: openCell().column+1)
+                
+                    
+                }
+            
+            case "up":
+                if openCell().row+1<gameBoard.count{
+                    didChooseCell(row: openCell().row+1, column: openCell().column)
+          
+                    
+                }
+            case "down":
+                if openCell().row-1>0{
+                    didChooseCell(row: openCell().row-1, column: openCell().column)
+                    
+                    
+                }
+            default:
+                continue
+            }
+            numShuffles -= 1
+            
+            
+        }
+    }
     
-    
+
+
     func gameSize() -> (rows: Int, columns: Int){
         return (numberOfRows, numberOfColumns)
     }

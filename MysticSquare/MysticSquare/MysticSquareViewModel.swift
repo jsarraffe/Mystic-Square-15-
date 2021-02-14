@@ -26,7 +26,7 @@ class MSViewModel: ObservableObject {
         let shuffle = row == -1 ? true:false
         
         if(shuffle) == true {
-            //gameModel.shuffle
+            gameModel.shuffle()
            
         }
         
