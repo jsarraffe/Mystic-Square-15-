@@ -35,7 +35,7 @@ struct MSModel{
         }
     }
     
-    func openCell()-> (row:Int, column:Int){
+    func freeCell()-> (row:Int, column:Int){
             
         var x: Int = 0
         var y: Int = 0
@@ -55,30 +55,30 @@ struct MSModel{
        
         let ranCell = ["left","right","down","up"]
         var randomSelection: String
+        var openCell = freeCell()
         while numShuffles != 0{
             randomSelection = ranCell.randomElement()!
+            openCell = freeCell()
             switch randomSelection {
             case "left":
-                if openCell().column-1>0{
-                    didChooseCell(row: openCell().row, column: openCell().column-1)
+                if openCell.column-1>=0 && gameBoard[openCell.row][openCell.column-1].cellType == .gameObject{
+                    didChooseCell(row: openCell.row, column: openCell.column-1)
                 }
             case "right":
-                if openCell().column+1<gameBoard[1].count{
-                    didChooseCell(row: openCell().row, column: openCell().column+1)
+                if openCell.column+1<gameBoard[1].count{
+                    didChooseCell(row: openCell.row, column: openCell.column+1)
                     
                 }
             
             case "up":
-                if openCell().row+1<gameBoard.count{
-                    didChooseCell(row: openCell().row+1, column: openCell().column)
+                if openCell.row+1<gameBoard.count{
+                    didChooseCell(row: openCell.row+1, column: openCell.column)
           
                     
                 }
             case "down":
-                if openCell().row-1>0{
-                    didChooseCell(row: openCell().row-1, column: openCell().column)
-                    
-                    
+                if openCell.row-1>=0{
+                    didChooseCell(row: openCell.row-1, column: openCell.column)
                 }
             default:
                 continue
