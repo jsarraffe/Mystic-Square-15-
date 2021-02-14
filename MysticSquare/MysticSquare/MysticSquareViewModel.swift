@@ -22,6 +22,14 @@ class MSViewModel: ObservableObject {
     }
     func didTapCell(row: Int, column: Int){
         
+        
+        let shuffle = row == -1 ? true:false
+        
+        if(shuffle) == true {
+            //gameModel.shuffle
+           
+        }
+        
         //gameBOard[row][column].isExposed = true
         print("ViewMode: tapped cell at \(row), \(column)")
         gameModel.didChooseCell(row: row, column: column)

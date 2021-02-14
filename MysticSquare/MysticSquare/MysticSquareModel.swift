@@ -34,6 +34,16 @@ struct MSModel{
             }
         }
     }
+    
+    mutating func shuffle(square :[[BoardCell]]){
+        
+        
+        
+    }
+    
+    func get grandom
+    
+    
     func gameSize() -> (rows: Int, columns: Int){
         return (numberOfRows, numberOfColumns)
     }

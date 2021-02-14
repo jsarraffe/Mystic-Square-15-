@@ -19,12 +19,20 @@ struct ContentView: View {
         buildGameView(rows: 4, columns: 4)
     }
     func buildGameView(rows: Int, columns: Int) -> some View {
-        return VStack {
+         VStack {
             ForEach(0..<rows){ row in
                 return buildGameRow(row: row, columns: columns)
             }
-            
-            
+             HStack{
+                Text("SHUFAIL")
+                    .padding()
+                    .background(Color.purple)
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .onTapGesture {
+                        viewModel.didTapCell(row: -1, column: -1)
+                    }
+            }
         }
     }
     func buildGameRow(row: Int, columns: Int) -> some View {
