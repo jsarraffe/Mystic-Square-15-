@@ -36,7 +36,7 @@ struct MSModel{
     }
     
     func freeCell()-> (row:Int, column:Int){
-            
+        
         var x: Int = 0
         var y: Int = 0
         for i in 0..<gameBoard.count{
@@ -49,48 +49,101 @@ struct MSModel{
         return(x,y)
     }
     
-    mutating func shuffle(){
+    mutating func shuffleHelper(direction: String){
+        let openCell = freeCell()
+        switch direction {
+                    case "left":
+                        if openCell.column-1>=0 && gameBoard[openCell.row][openCell.column-1].cellType == .gameObject{
+                            didChooseCell(row: openCell.row, column: openCell.column-1)
+                        }
+                    case "right":
+                        if openCell.column+1<gameBoard[1].count{
+                            didChooseCell(row: openCell.row, column: openCell.column+1)
+                        }
+                    case "up":
+                        if openCell.row+1<gameBoard.count{
+                            didChooseCell(row: openCell.row+1, column: openCell.column)
+                        }
+                    case "down":
+                        if openCell.row-1>=0{
+                            didChooseCell(row: openCell.row-1, column: openCell.column)
+                        }
+                    default:
+                        return
+                    }
+                    
+    }
+    func recursiveHelper(shuffle: (Int) -> Void){
         
-        var numShuffles = 1
-       
-        let ranCell = ["left","right","down","up"]
-        var randomSelection: String
-        var openCell = freeCell()
-        while numShuffles != 0{
-            randomSelection = ranCell.randomElement()!
-            openCell = freeCell()
-            switch randomSelection {
-            case "left":
-                if openCell.column-1>=0 && gameBoard[openCell.row][openCell.column-1].cellType == .gameObject{
-                    didChooseCell(row: openCell.row, column: openCell.column-1)
-                }
-            case "right":
-                if openCell.column+1<gameBoard[1].count{
-                    didChooseCell(row: openCell.row, column: openCell.column+1)
-                    
-                }
+    }
+    mutating func shuffle(counter: Int){
+        
+        //RECURSION
+        let ranDirect = ["left","right","down","up"]
+        if(counter == 0){
+            return
+        } else{
+            shuffleHelper(direction: ranDirect.randomElement()!)
             
-            case "up":
-                if openCell.row+1<gameBoard.count{
-                    didChooseCell(row: openCell.row+1, column: openCell.column)
-          
-                    
-                }
-            case "down":
-                if openCell.row-1>=0{
-                    didChooseCell(row: openCell.row-1, column: openCell.column)
-                }
-            default:
-                continue
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                
             }
-            numShuffles -= 1
-            
-            
+            shuffle(counter: counter-1)
         }
+        
+    }
+//    mutating func shuffle(){
+//
+//        var numShuffles = Int.random(in: 20..<30)
+//
+//        let ranCell = ["left","right","down","up"]
+//        var randomSelection: String
+//        var openCell = freeCell()
+//        while numShuffles != 0{
+//
+//            //DispatchQueue.main.asyncAfter(deadline.now()+0.5)
+//
+//            randomSelection = ranCell.randomElement()!
+//            openCell = freeCell()
+//            switch randomSelection {
+//            case "left":
+//                if openCell.column-1>=0 && gameBoard[openCell.row][openCell.column-1].cellType == .gameObject{
+//                    didChooseCell(row: openCell.row, column: openCell.column-1)
+//                }
+//            case "right":
+//                if openCell.column+1<gameBoard[1].count{
+//                    didChooseCell(row: openCell.row, column: openCell.column+1)
+//                }
+//            case "up":
+//                if openCell.row+1<gameBoard.count{
+//                    didChooseCell(row: openCell.row+1, column: openCell.column)
+//                }
+//            case "down":
+//                if openCell.row-1>=0{
+//                    didChooseCell(row: openCell.row-1, column: openCell.column)
+//                }
+//            default:
+//                continue
+//            }
+//            numShuffles -= 1
+//
+//
+//        }
+//    }
+    
+    func didWin(gameboard:[[BoardCell]]) -> Bool {
+        var currCount = 1
+        for i in 0..<gameboard.count{
+            for j in 0..<gameboard[1].count{
+                if gameboard[i][j].cellNum  != currCount{
+                    return false
+                }
+                currCount += 1
+            }
+        }
+        return true
     }
     
-
-
     func gameSize() -> (rows: Int, columns: Int){
         return (numberOfRows, numberOfColumns)
     }

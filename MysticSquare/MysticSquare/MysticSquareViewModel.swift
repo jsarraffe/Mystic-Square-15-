@@ -18,7 +18,9 @@ class MSViewModel: ObservableObject {
     @Published var gameModel = MSModel()
     //publish to those who have subscribed to get notified about changes
     init () {
+        
         gameModel.createGameFor(rows: 4, columns: 4)
+        gameModel.shuffle(counter: Int.random(in: 0...5))
     }
     func didTapCell(row: Int, column: Int){
         
@@ -26,7 +28,7 @@ class MSViewModel: ObservableObject {
         let shuffle = row == -1 ? true:false
         
         if(shuffle) == true {
-            gameModel.shuffle()
+            gameModel.shuffle(counter: Int.random(in: 20...40))
            
         }
         
