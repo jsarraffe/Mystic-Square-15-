@@ -14,7 +14,7 @@ struct MSModel{
     var gameBoard: [[BoardCell]] = []
     var numberOfRows = 0
     var numberOfColumns = 0
-    
+    var originalGameBoard: [[BoardCell]] = []
     
     mutating func createGameFor(rows: Int, columns: Int){
         
@@ -33,6 +33,7 @@ struct MSModel{
                 count += 1
             }
         }
+        originalGameBoard = gameBoard
     }
     
     func freeCell()-> (row:Int, column:Int){
@@ -55,41 +56,43 @@ struct MSModel{
                     case "left":
                         if openCell.column-1>=0 && gameBoard[openCell.row][openCell.column-1].cellType == .gameObject{
                             didChooseCell(row: openCell.row, column: openCell.column-1)
+                        } else{
+                            didChooseCell(row: openCell.row, column: openCell.column+1)
                         }
                     case "right":
                         if openCell.column+1<gameBoard[1].count{
                             didChooseCell(row: openCell.row, column: openCell.column+1)
+                        }else{
+                            didChooseCell(row: openCell.row, column: openCell.column-1)
                         }
                     case "up":
                         if openCell.row+1<gameBoard.count{
                             didChooseCell(row: openCell.row+1, column: openCell.column)
+                        }else{
+                            didChooseCell(row: openCell.row-1, column: openCell.column)
                         }
                     case "down":
                         if openCell.row-1>=0{
                             didChooseCell(row: openCell.row-1, column: openCell.column)
+                        }else{
+                            didChooseCell(row: openCell.row+1, column: openCell.column)
                         }
                     default:
                         return
                     }
                     
     }
-    func recursiveHelper(shuffle: (Int) -> Void){
-        
-    }
-    mutating func shuffle(counter: Int){
+   
+    mutating func shuffle(){
         
         //RECURSION
         let ranDirect = ["left","right","down","up"]
-        if(counter == 0){
-            return
-        } else{
-            shuffleHelper(direction: ranDirect.randomElement()!)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                
-            }
-            shuffle(counter: counter-1)
-        }
+        shuffleHelper(direction: ranDirect.randomElement()!)
+        
+    }
+    
+    mutating func reset(){
+        gameBoard = originalGameBoard
         
     }
 //    mutating func shuffle(){

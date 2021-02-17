@@ -10,7 +10,6 @@ import Foundation
 class MSViewModel: ObservableObject {
     //Object in this class that needs to observe changes, and gameModel is that object
     
-    
     // bridges between the model and the view
     
     // to interpret the model for the view
@@ -19,17 +18,20 @@ class MSViewModel: ObservableObject {
     //publish to those who have subscribed to get notified about changes
     init () {
         
+       
         gameModel.createGameFor(rows: 4, columns: 4)
-        gameModel.shuffle(counter: Int.random(in: 0...5))
+        for _ in 0..<10{
+            gameModel.shuffle()
+        }
+        
     }
     func didTapCell(row: Int, column: Int){
         
         
-        let shuffle = row == -1 ? true:false
+        let tapedShuffle = row == -1 ? true:false
         
-        if(shuffle) == true {
-            gameModel.shuffle(counter: Int.random(in: 20...40))
-           
+        if(tapedShuffle) == true {
+            shuffle(count: Int.random(in: 12..<20))
         }
         
         //gameBOard[row][column].isExposed = true
@@ -37,6 +39,20 @@ class MSViewModel: ObservableObject {
         gameModel.didChooseCell(row: row, column: column)
     }
     
+    func shuffle(count: Int){
+        if count == 0{
+            return
+        }
+        else {
+            gameModel.shuffle()
+            DispatchQueue.main.asyncAfter(deadline:.now()+0.1){
+                self.shuffle(count: count - 1)
+            }
+        }
+    }
+    func reset(){
+        gameModel.reset()
+    }
     func cellAt(row: Int, column: Int) -> BoardCell {
         return gameModel.gameBoard[row][column]
     }

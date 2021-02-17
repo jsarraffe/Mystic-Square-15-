@@ -11,7 +11,11 @@ import SwiftUI
 struct MysticSquareApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            
+            ZStack{
+                Image("background")
+                ContentView()
+            }
         }
     }
 }
