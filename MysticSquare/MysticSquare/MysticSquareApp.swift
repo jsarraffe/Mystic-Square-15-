@@ -15,7 +15,9 @@ struct MysticSquareApp: App {
             ZStack{
                 Image("background")
                 ContentView()
+                
             }
+            
         }
     }
 }

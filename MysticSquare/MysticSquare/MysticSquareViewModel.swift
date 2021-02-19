@@ -18,22 +18,26 @@ class MSViewModel: ObservableObject {
     //publish to those who have subscribed to get notified about changes
     init () {
         
-       
+        gameModel.isPlaying = false
         gameModel.createGameFor(rows: 4, columns: 4)
-        for _ in 0..<10{
-            gameModel.shuffle()
-        }
+        
+        
+        //        for _ in 0..<10{
+        //            gameModel.shuffle()
+        //        }
         
     }
+    
     func didTapCell(row: Int, column: Int){
         
         
         let tapedShuffle = row == -1 ? true:false
+        gameModel.isPlaying = true
         
         if(tapedShuffle) == true {
-            shuffle(count: Int.random(in: 12..<20))
+            
+            shuffle(count: Int.random(in: 5..<12))
         }
-        
         //gameBOard[row][column].isExposed = true
         print("ViewMode: tapped cell at \(row), \(column)")
         gameModel.didChooseCell(row: row, column: column)
@@ -51,6 +55,7 @@ class MSViewModel: ObservableObject {
         }
     }
     func reset(){
+        gameModel.isPlaying = false
         gameModel.reset()
     }
     func cellAt(row: Int, column: Int) -> BoardCell {

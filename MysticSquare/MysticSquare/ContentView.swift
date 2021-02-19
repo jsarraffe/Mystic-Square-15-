@@ -16,52 +16,20 @@ struct ContentView: View {
     //it's intrested in recieving changes
     
     var body: some View {
-        if viewModel.gameModel.didWin(gameboard: viewModel.gameModel.gameBoard){
+        if viewModel.gameModel.didWin(gameboard: viewModel.gameModel.gameBoard) && viewModel.gameModel.isPlaying == true{
             dubs()
         }else{
-            
             buildGameView(rows: 4, columns: 4)
         }
         
     }
+    
+    // dubs is the W, or win view
     func dubs() -> some View{
-        Text("Congrats you wasted your time playing this GAME").font(.system(size: 40))
-        
-    }
-    func buildGameView(rows: Int, columns: Int) -> some View {
-        
-        
-        VStack {
-            VStack{
-                ForEach(0..<rows){ row in
-                    return buildGameRow(row: row, columns: columns)
-                }
-            }.padding().background(Color.pink).cornerRadius(25)
-            
-            
+        return VStack{
             Button(action: {
-                
-                viewModel.shuffle(count: Int.random(in: 15...30))
-            }){
-                
-                Text("Shuffle")
-                    .padding()
-                    .background(Color.purple)
-                    .foregroundColor(.white)
-                    .font(.largeTitle)
-                    .onTapGesture {
-                        
-                        viewModel.didTapCell(row: -1, column: -1)
-                        
-                    }.foregroundColor(.black)
-                
-                
-            }
-            Button(action: {
-                
                 viewModel.reset()
             }){
-                
                 Text("Reset")
                     .padding()
                     .background(Color.purple)
@@ -71,8 +39,62 @@ struct ContentView: View {
                         
                         viewModel.reset()
                         
-                    }.foregroundColor(.black)
+                    }
                 
+            }.transition(.slide)
+            Text("Congrats you HAVE WON!!!!!!").foregroundColor(Color.white).font(.system(size: 25)).transition(.move(edge: .bottom))
+        }
+        
+    }
+    func buildGameView(rows: Int, columns: Int) -> some View {
+        
+        VStack {
+            VStack{
+                ForEach(0..<rows){ row in
+                    return buildGameRow(row: row, columns: columns)
+                }
+            }.padding().background(Color.pink).cornerRadius(25)
+            
+            
+            HStack{
+                Button(action: {
+                    
+                    viewModel.shuffle(count: Int.random(in: 15...30))
+                }){
+                    
+                    Text("Shuffle")
+                        .fontWeight(.bold)
+                        .font(.title)
+                        .padding()
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .padding(12)
+                        .border(Color.black, width: 8)
+                    
+                    
+                }
+                Button(action: {
+                    
+                    viewModel.reset()
+                }){
+                    
+                    Text("  Reset ")
+                        .fontWeight(.bold)
+                        .font(.title)
+                        .padding()
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .padding(12)
+                        .border(Color.black, width: 8)
+                        
+                        .onTapGesture {
+                            
+                            viewModel.reset()
+                            
+                        }.foregroundColor(.black)
+                    
+                    
+                }.padding(12).transition(.identity).animation(/*@START_MENU_TOKEN@*/.easeIn/*@END_MENU_TOKEN@*/)
                 
             }
         }
@@ -90,27 +112,20 @@ struct ContentView: View {
         }
         .animation(.interactiveSpring())
     }
- 
+    
     func buildCellFor(row: Int, column: Int)-> some View {
         return ZStack {
-            
+            //used SFsymbols to simplify   example 43.square.fill
             if(viewModel.gameModel.gameBoard[row][column].cellType == .emptyCell){
                 Image(systemName: "\(viewModel.gameModel.gameBoard[row][column].cellNum).square.fill").resizable().foregroundColor(.clear).frame(width: 75, height: 75)
                 
             }else{
-                //                RoundedRectangle(cornerRadius: cornerRadiusForCell).foregroundColor(Color.orange)
-                //                RoundedRectangle(cornerRadius: cornerRadiusForCell).stroke(lineWidth: strokeLIneWidth)
-                
-                //Text("\(viewModel.gameModel.gameBoard[row][column].cellNum)")
                 Image(systemName: "\(viewModel.gameModel.gameBoard[row][column].cellNum).square.fill").resizable().frame(width: 75, height: 75)
                 
-                //SF SYMBOLS LIBRARY IS AWSOME
                 
             }
         }
     }
-    
-    
     struct ContentView_Previews: PreviewProvider {
         static var previews: some View {
             ContentView()

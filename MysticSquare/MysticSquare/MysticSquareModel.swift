@@ -15,6 +15,16 @@ struct MSModel{
     var numberOfRows = 0
     var numberOfColumns = 0
     var originalGameBoard: [[BoardCell]] = []
+    var isPlaying = false
+    
+    
+    
+    
+
+    
+    func getIsPlaying()-> Bool{
+        return isPlaying
+    }
     
     mutating func createGameFor(rows: Int, columns: Int){
         
@@ -35,7 +45,6 @@ struct MSModel{
         }
         originalGameBoard = gameBoard
     }
-    
     func freeCell()-> (row:Int, column:Int){
         
         var x: Int = 0
@@ -49,7 +58,6 @@ struct MSModel{
         }
         return(x,y)
     }
-    
     mutating func shuffleHelper(direction: String){
         let openCell = freeCell()
         switch direction {
@@ -82,7 +90,6 @@ struct MSModel{
                     }
                     
     }
-   
     mutating func shuffle(){
         
         //RECURSION
@@ -90,50 +97,12 @@ struct MSModel{
         shuffleHelper(direction: ranDirect.randomElement()!)
         
     }
-    
     mutating func reset(){
+        isPlaying = false
         gameBoard = originalGameBoard
         
+        
     }
-//    mutating func shuffle(){
-//
-//        var numShuffles = Int.random(in: 20..<30)
-//
-//        let ranCell = ["left","right","down","up"]
-//        var randomSelection: String
-//        var openCell = freeCell()
-//        while numShuffles != 0{
-//
-//            //DispatchQueue.main.asyncAfter(deadline.now()+0.5)
-//
-//            randomSelection = ranCell.randomElement()!
-//            openCell = freeCell()
-//            switch randomSelection {
-//            case "left":
-//                if openCell.column-1>=0 && gameBoard[openCell.row][openCell.column-1].cellType == .gameObject{
-//                    didChooseCell(row: openCell.row, column: openCell.column-1)
-//                }
-//            case "right":
-//                if openCell.column+1<gameBoard[1].count{
-//                    didChooseCell(row: openCell.row, column: openCell.column+1)
-//                }
-//            case "up":
-//                if openCell.row+1<gameBoard.count{
-//                    didChooseCell(row: openCell.row+1, column: openCell.column)
-//                }
-//            case "down":
-//                if openCell.row-1>=0{
-//                    didChooseCell(row: openCell.row-1, column: openCell.column)
-//                }
-//            default:
-//                continue
-//            }
-//            numShuffles -= 1
-//
-//
-//        }
-//    }
-    
     func didWin(gameboard:[[BoardCell]]) -> Bool {
         var currCount = 1
         for i in 0..<gameboard.count{
@@ -144,7 +113,12 @@ struct MSModel{
                 currCount += 1
             }
         }
-        return true
+        
+        if isPlaying == true{
+            return true
+        }
+        else{return false}
+        
     }
     
     func gameSize() -> (rows: Int, columns: Int){
@@ -169,7 +143,6 @@ struct MSModel{
         
     }
     mutating func didChooseCell(row: Int, column: Int){
-        
         //gameBoard[row][column].isExposed = true
         print("ViewMode: tapped cell at \(row), \(column)")
         //print(gameBoard[row][column]
@@ -187,7 +160,6 @@ struct MSModel{
             gameBoard[x][y].cellNum = gameBoard[row][column].cellNum
             gameBoard[row][column].cellNum = 16
             gameBoard[row][column].cellType = .emptyCell
-            
         }
     }
 }
@@ -195,9 +167,7 @@ enum CellType {
     case gameObject
     case emptyCell
 }
-
 struct BoardCell {
     var cellType: CellType
     var cellNum: Int
-    
 }
